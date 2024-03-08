@@ -33,6 +33,7 @@ main {
         .shopping_cart {
             background-color: white;
             flex-grow: 1;
+            overflow-y: auto;
 
             .cart_top {
                 display: flex;
