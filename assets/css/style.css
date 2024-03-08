@@ -4,3 +4,111 @@
     box-sizing: border-box;
     /* border: 1px dashed deepskyblue; */
 }
+
+main {
+    background-color: lightgray;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+
+    .container {
+        height: 90%;
+        width: 90%;
+        display: flex;
+
+        .shopping_cart,
+        .sidebar {
+            padding: 4rem;
+        }
+
+        .cart_top,
+        .sidebar_top {
+            font-size: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid gray;
+        }
+
+        .shopping_cart {
+            background-color: white;
+            flex-grow: 1;
+
+            .cart_top {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .cart_bottom {
+                & table {
+                    width: 100%;
+                    padding-top: 2rem;
+
+                    & th {
+                        font-size: 2rem;
+                        color: gray;
+                    }
+
+                    & th:first-child {
+                        text-align: left;
+                    }
+
+                    & td {
+                        text-align: center;
+                        font-size: 1.5rem;
+                    }
+
+                    .item_title {
+                        display: flex;
+                        align-items: center;
+
+                        .item_img {
+                            width: 100px;
+                        }
+
+                        .item_name, .item_remove {
+                            padding: 0 1rem;
+                            text-align: left;
+                        }
+
+                        .item_name {
+                            font-size: 1.5rem;
+                            padding-bottom: 0.5rem;
+                        }
+
+                        .item_remove {
+                            color: red;
+                            font-size: 0.9rem;
+                            font-weight: 100;
+                        }
+                    }
+
+                    .quantity {
+
+                        & button {
+                            font-size: 2rem;
+                            border: none;
+                            background-color: white;
+                        }
+
+                        .quantity_counter {
+                            display: inline-block;
+                            font-size: 1.5rem;
+                            height: 3rem;
+                            width: 3rem;
+                            line-height: 3rem;
+                            border: 1px solid darkgrey;
+                            background-color: lightgray;
+                            margin-inline: 1rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .sidebar {
+            background-color: darkgray;
+            width: 500px;
+        }
+    }
+}

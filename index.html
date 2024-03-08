@@ -7,7 +7,63 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-
+<main>
+    <div class="container">
+        <div class="shopping_cart">
+            <div class="cart_top">
+                <h2>Shopping Cart</h2>
+                <h2>4 Items</h2>
+            </div>
+            <!-- /.cart_top -->
+            <div class="cart_bottom">
+                <table>
+                    <thead>
+                        <th>PRODUCT</th>
+                        <th>QUANTITY</th>
+                        <th>PRICE</th>
+                        <th>TOTAL</th>
+                    </thead>
+                    <!-- /.table_head -->
+                    <tbody>
+                        <tr>
+                            <td class="item_title">
+                                <img class="item_img" src="./assets/img/foods/burger.png" alt="">
+                                <!-- /.item_img -->
+                                <div class="item_text">
+                                    <div class="item_name">Burger</div>
+                                    <!-- /.item_name -->
+                                    <div class="item_remove">Remove</div>
+                                    <!-- /.remove_item -->
+                                </div>
+                                <!-- /.item_text -->
+                            </td>
+                            <td class="quantity">
+                                <button class="minus_button">&minus;</button>
+                                <div class="quantity_counter">1</div>
+                                <button class="plus_button">&plus;</button>
+                            </td>
+                            <td>8.50€</td>
+                            <td>8.50€</td>
+                        </tr>
+                    </tbody>
+                    <!-- /.table_body -->
+                </table>
+            </div>
+            <!-- /.cart_bottom -->
+        </div>
+        <!-- /.shopping_cart -->
+        <div class="sidebar">
+            <div class="sidebar_top">
+                <h2>Order Summary</h2>
+            </div>
+            <!-- /.sidebar_top -->
+            <div class="sidebar_bottom"></div>
+            <!-- /.sidebar_bottom -->
+        </div>
+        <!-- /.sidebar -->
+    </div>
+    <!-- /.container -->
+</main>
     
     <script src="./assets/js/main.js"></script>
 </body>
