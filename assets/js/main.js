@@ -51,6 +51,8 @@ function generateItem(item) {
     itemRemove.classList.add('item_remove');
     itemRemove.innerHTML = 'Remove';
     itemRemove.addEventListener('click', function(){
+        item.quantity = 0;
+        tdItemTotal.innerHTML = `${item.totalPrice()}€`;
         trItemRow.remove();
     });
 
@@ -183,7 +185,6 @@ const observerCart = new MutationObserver(() => {
 
 document.querySelectorAll('.item_total_price').forEach((item) => {
     observerCart.observe(item, {
-        subtree:true,
         childList: true,
     });
 });
