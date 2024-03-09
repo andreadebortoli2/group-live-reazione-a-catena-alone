@@ -117,6 +117,7 @@ function generateItem(item) {
         };
     };
 
+    // --quantity counter
     const quantityCounter = document.createElement('div');
     quantityCounter.classList.add('quantity_counter');
     quantityCounter.innerHTML = `${item.quantity}`;
@@ -134,7 +135,7 @@ function generateItem(item) {
         // sum the cart total cost
         products.forEach((product) => {
             cartTotalCost = cartTotalCost + product.totalPrice()
-        
+
         })
     });
 
@@ -142,9 +143,11 @@ function generateItem(item) {
 
     // item price and total
     const tdItemPrice = document.createElement('td');
+    tdItemPrice.classList.add('item_price')
     tdItemPrice.innerHTML = `${item.price}€`;
 
     const tdItemTotal = document.createElement('td');
+    tdItemTotal.classList.add('item_total_price');
     tdItemTotal.innerHTML = `${item.totalPrice()}€`;
 
     // add all parts
@@ -172,29 +175,40 @@ products.forEach(product => generateItem(product));
 
 //++++++++++++++++++++++++ sidebar ++++++++++++++++++++++++++
 
-let cartTotalCost = 0;
-
-products.forEach((product) => {
-    cartTotalCost = cartTotalCost + product.totalPrice()
-
-});
-
-console.log(cartTotalCost);
-//----------------------------
-
-
-
 // cart summary items
 const cartSummaryItems = document.querySelector('.cart_summary_items');
 cartSummaryItems.innerHTML = `ITEMS - ${products.length}`;
 
-// cart summary price
+
+// -- calculate cart summary price
+let cartTotalCost = 0;
+
+products.forEach(product => cartTotalCost = cartTotalCost + product.totalPrice());
+
+// -- print cart summary price
 const cartSummaryPrice = document.querySelector('.cart_summary_price');
 cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
 
+// -- set 'observer' to work at all the changes on products.totalPrice and re-print cart summary price --
+const observer = new MutationObserver(() => {
+    console.log("callback that runs when observer is triggered");
+    cartTotalCost = 0
+    products.forEach(product => cartTotalCost = cartTotalCost + product.totalPrice());
+    console.log(cartTotalCost);
+    cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
+});
+
+document.querySelectorAll('.item_total_price').forEach((item) => {
+    observer.observe(item, {
+        subtree: true,
+        childList: true,
+      });
+});
+
+
 // total cost checkout
 const shippingCost = document.getElementById('shipping_options');
-    
+
 function calcChechkoutCost(shippingCostValue) {
     return total = Number(cartTotalCost) + Number(shippingCostValue)
 }
@@ -202,6 +216,6 @@ function calcChechkoutCost(shippingCostValue) {
 const totalCheckoutCost = document.querySelector('.checkout_cost');
 totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
 
-shippingCost.addEventListener('change', function(){
+shippingCost.addEventListener('change', function () {
     totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
 });
