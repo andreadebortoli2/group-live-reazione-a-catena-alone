@@ -91,7 +91,7 @@ function generateItem(item) {
     tdItemQuantity.classList.add('quantity');
 
 
-    //+++++++++++++++++ todo bug minus sometimes stop to work after 15 clicks circa ++++++++++++++++
+    //+++++++++++++++++ todo bug minus sometimes stop to work if you click minus one more time after reach the 0 ++++++++++++++++
     // --button minus
     const minusButton = document.createElement('button');
     minusButton.classList.add('minus_button');
@@ -180,6 +180,7 @@ const cartSummaryItems = document.querySelector('.cart_summary_items');
 cartSummaryItems.innerHTML = `ITEMS - ${products.length}`;
 
 
+
 // -- calculate cart summary price
 let cartTotalCost = 0;
 
@@ -189,33 +190,38 @@ products.forEach(product => cartTotalCost = cartTotalCost + product.totalPrice()
 const cartSummaryPrice = document.querySelector('.cart_summary_price');
 cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
 
-// -- set 'observer' to work at all the changes on products.totalPrice and re-print cart summary price --
-const observer = new MutationObserver(() => {
-    console.log("callback that runs when observer is triggered");
-    cartTotalCost = 0
-    products.forEach(product => cartTotalCost = cartTotalCost + product.totalPrice());
-    console.log(cartTotalCost);
-    cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
-});
-
-document.querySelectorAll('.item_total_price').forEach((item) => {
-    observer.observe(item, {
-        subtree: true,
-        childList: true,
-      });
-});
 
 
-// total cost checkout
+// -- select the shipping
 const shippingCost = document.getElementById('shipping_options');
 
+// -- calc total cost checkout
 function calcChechkoutCost(shippingCostValue) {
-    return total = Number(cartTotalCost) + Number(shippingCostValue)
-}
+    return total = Number(cartTotalCost) + Number(shippingCostValue);
+};
 
+// -- print checkout cost
 const totalCheckoutCost = document.querySelector('.checkout_cost');
 totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
 
+// -- re-print checkout cost at the change of shipping
 shippingCost.addEventListener('change', function () {
     totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
+});
+
+
+
+// -- set 'observer' to work at all the changes on products.totalPrice and re-print cart summary price and checkot price --
+const observerCart = new MutationObserver(() => {
+    cartTotalCost = 0
+    products.forEach(product => cartTotalCost = cartTotalCost + product.totalPrice());
+    /* console.log(cartTotalCost); */
+    cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
+    totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
+});
+
+document.querySelectorAll('.item_total_price').forEach((item) => {
+    observerCart.observe(item, {
+        childList: true,
+      });
 });
