@@ -25,7 +25,7 @@ main {
 
         .cart_top,
         .sidebar_top {
-            font-size: 2rem;
+            font-size: 1.5rem;
             padding-bottom: 2rem;
             border-bottom: 2px solid gray;
         }
@@ -46,7 +46,7 @@ main {
                     padding-top: 2rem;
 
                     & th {
-                        font-size: 2rem;
+                        font-size: 1.5rem;
                         color: gray;
                     }
 
@@ -67,7 +67,8 @@ main {
                             width: 100px;
                         }
 
-                        .item_name, .item_remove {
+                        .item_name,
+                        .item_remove {
                             padding: 0 1rem;
                             text-align: left;
                         }
@@ -78,7 +79,7 @@ main {
                         }
 
                         .item_remove {
-                            color: red;
+                            color: tomato;
                             font-size: 0.9rem;
                             font-weight: 100;
                         }
@@ -110,6 +111,57 @@ main {
         .sidebar {
             background-color: darkgray;
             width: 500px;
+
+            & form {
+                &>div {
+                    padding-top: 2rem;
+                    font-size: 1.5rem;
+                }
+
+                .cart_summary,
+                .total_cost {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                & label {
+                    display: block;
+                    color: gray;
+                }
+
+                & button {
+                    color: white;
+                    border: none;
+                    border-radius: 0.2rem;
+                    padding: 1rem 1.5rem;
+                }
+
+                #code,
+                #shipping_options {
+                    width: 100%;
+                    padding: 1rem;
+                    margin-top: 1rem;
+                    border: none;
+                    border-radius: 0.2rem;
+                }
+
+                .apply {
+                    display: block;
+                    background-color: tomato;
+                    margin: 1rem 0;
+                }
+
+                .checkout {
+                    border-top: 2px solid gray;
+                    padding-top: 3rem;
+
+                    .btn_checkout {
+                        margin-top: 1rem;
+                        background-color: royalblue;
+                        width: 100%;
+                    }
+                }
+            }
         }
     }
 }
