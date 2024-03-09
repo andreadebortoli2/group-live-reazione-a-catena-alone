@@ -22,6 +22,13 @@ const products = [
 
 ];
 
+
+
+/* let cartTotalCost = 0; */
+
+
+
+
 document.querySelector('.items_counter').innerHTML = `${products.length} Items`;
 
 const tableTbody = document.querySelector('tbody');
@@ -84,7 +91,7 @@ function generateItem(item) {
     tdItemQuantity.classList.add('quantity');
 
 
-    //+++++++++++++++++todo bug minus sometimes stop towork after15 clicks circa++++++++++++++++
+    //+++++++++++++++++ todo bug minus sometimes stop to work after 15 clicks circa ++++++++++++++++
     // --button minus
     const minusButton = document.createElement('button');
     minusButton.classList.add('minus_button');
@@ -123,6 +130,12 @@ function generateItem(item) {
         // console.log(item.quantity);
         quantityCounter.innerHTML = `${item.quantity}`;
         tdItemTotal.innerHTML = `${item.totalPrice()}€`;
+
+        // sum the cart total cost
+        products.forEach((product) => {
+            cartTotalCost = cartTotalCost + product.totalPrice()
+        
+        })
     });
 
     tdItemQuantity.append(minusButton, quantityCounter, plusButton);
@@ -156,3 +169,39 @@ products.forEach(product => generateItem(product));
 
     });
 }); */
+
+//++++++++++++++++++++++++ sidebar ++++++++++++++++++++++++++
+
+let cartTotalCost = 0;
+
+products.forEach((product) => {
+    cartTotalCost = cartTotalCost + product.totalPrice()
+
+});
+
+console.log(cartTotalCost);
+//----------------------------
+
+
+
+// cart summary items
+const cartSummaryItems = document.querySelector('.cart_summary_items');
+cartSummaryItems.innerHTML = `ITEMS - ${products.length}`;
+
+// cart summary price
+const cartSummaryPrice = document.querySelector('.cart_summary_price');
+cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
+
+// total cost checkout
+const shippingCost = document.getElementById('shipping_options');
+    
+function calcChechkoutCost(shippingCostValue) {
+    return total = Number(cartTotalCost) + Number(shippingCostValue)
+}
+
+const totalCheckoutCost = document.querySelector('.checkout_cost');
+totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
+
+shippingCost.addEventListener('change', function(){
+    totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
+});

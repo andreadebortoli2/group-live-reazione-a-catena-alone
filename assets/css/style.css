@@ -110,8 +110,9 @@ main {
 
         .sidebar {
             background-color: darkgray;
-            width: 500px;
-
+            width: 401px;
+            overflow-y: auto;
+            
             & form {
                 &>div {
                     padding-top: 2rem;
@@ -143,6 +144,10 @@ main {
                     margin-top: 1rem;
                     border: none;
                     border-radius: 0.2rem;
+                }
+
+                & option {
+                    width: 80%;
                 }
 
                 .apply {
