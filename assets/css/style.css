@@ -62,26 +62,25 @@ main {
                     .item_title {
                         display: flex;
                         align-items: center;
+                        text-align: left;
 
                         .item_img {
                             width: 100px;
                         }
 
-                        .item_name,
-                        .item_remove {
-                            padding: 0 1rem;
-                            text-align: left;
-                        }
-
                         .item_name {
+                            padding: 0 1rem;
                             font-size: 1.5rem;
                             padding-bottom: 0.5rem;
                         }
-
+                        
                         .item_remove {
+                            padding: 0 1rem;
                             color: tomato;
                             font-size: 0.9rem;
                             font-weight: 100;
+                            background-color: white;
+                            border: none;
                         }
                     }
 

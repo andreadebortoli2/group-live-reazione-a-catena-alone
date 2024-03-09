@@ -35,16 +35,28 @@ function generateItem(item) {
     // item title
     const tdItemTitle = document.createElement('td');
     tdItemTitle.classList.add('item_title');
-    tdItemTitle.innerHTML =
-        `<img class="item_img" src="./assets/img/foods/${item.image}" alt="">
-    <!-- /.item_img -->
-    <div class="item_text">
-    <div class="item_name">${item.name}</div>
-    <!-- /.item_name -->
-    <div class="item_remove">Remove</div>
-    <!-- /.remove_item -->
-    </div>
-    <!-- /.item_text -->`;
+
+    const itemImg = document.createElement('img');
+    itemImg.classList.add('item_img');
+    itemImg.setAttribute('src', `./assets/img/foods/${item.image}`);
+
+    const itemText = document.createElement('div');
+    itemText.classList.add('item_text');
+
+    const itemName = document.createElement('div');
+    itemName.classList.add('item_name');
+    itemName.innerHTML = `${item.name}`;
+
+    const itemRemove = document.createElement('button');
+    itemRemove.classList.add('item_remove');
+    itemRemove.innerHTML = 'Remove';
+    itemRemove.addEventListener('click', function(){
+        trItemRow.remove();
+    });
+
+    itemText.append(itemName, itemRemove);
+
+    tdItemTitle.append(itemImg, itemText);
 
 
     // item quantity
@@ -52,31 +64,30 @@ function generateItem(item) {
     tdItemQuantity.classList.add('quantity');
 
 
-    // --button minus
+    // -- button minus
     const minusButton = document.createElement('button');
     minusButton.classList.add('minus_button');
     minusButton.innerHTML = '-';
-    //+++++++++++++++++ todo bug minus sometimes stop to work if you click minus one more time after reach the 0 ++++++++++++++++
     minusButton.addEventListener('click', subtract);
     function subtract() {
-        if (item.quantity > 0) {
+        if (item.quantity >= 1) {
             item.quantity--
             // console.log(item.quantity);
             quantityCounter.innerHTML = `${item.quantity}`;
             tdItemTotal.innerHTML = `${item.totalPrice()}€`;
-        } else if (item.quantity < 1) {
+        } else if (item.quantity === 1) {
             this.removeEventListener('click', subtract);
         };
     };
 
 
-    // --quantity counter
+    // -- quantity counter
     const quantityCounter = document.createElement('div');
     quantityCounter.classList.add('quantity_counter');
     quantityCounter.innerHTML = `${item.quantity}`;
 
 
-    // --button plus
+    // -- button plus
     const plusButton = document.createElement('button');
     plusButton.classList.add('plus_button');
     plusButton.innerHTML = '+';
@@ -86,7 +97,7 @@ function generateItem(item) {
         quantityCounter.innerHTML = `${item.quantity}`;
         tdItemTotal.innerHTML = `${item.totalPrice()}€`;
 
-        // sum the cart total cost
+        // -- sum the cart total cost
         products.forEach((product) => {
             cartTotalCost = cartTotalCost + product.totalPrice();
         });
@@ -105,7 +116,7 @@ function generateItem(item) {
     tdItemTotal.classList.add('item_total_price');
     tdItemTotal.innerHTML = `${item.totalPrice()}€`;
 
-    // add all parts
+    // -- add all parts
     trItemRow.append(tdItemTitle, tdItemQuantity, tdItemPrice, tdItemTotal);
 
 };
@@ -172,6 +183,7 @@ const observerCart = new MutationObserver(() => {
 
 document.querySelectorAll('.item_total_price').forEach((item) => {
     observerCart.observe(item, {
+        subtree:true,
         childList: true,
     });
 });
