@@ -1,5 +1,6 @@
 // console.log('test');
-/* class declaration function contructor */
+
+/* class declaration - function contructor */
 class item {
     constructor(image, name, quantity, price) {
         this.image = image;
@@ -98,11 +99,6 @@ function generateItem(item) {
         // console.log(item.quantity);
         quantityCounter.innerHTML = `${item.quantity}`;
         tdItemTotal.innerHTML = `${item.totalPrice()}€`;
-
-        // -- sum the cart total cost
-        products.forEach((product) => {
-            cartTotalCost = cartTotalCost + product.totalPrice();
-        });
     });
 
     // -- add quantity buttons and counter
@@ -125,33 +121,59 @@ function generateItem(item) {
 
 
 
-// -- create the cart table
-document.querySelector('.items_counter').innerHTML = `${products.length} Items`;
+// cart items counter
 
+/**
+ * calc the total items in the cart based on each item quantity
+ * @returns total items in the cart
+ */
+function calcTotalItems() {
+    let total = 0;
+    products.forEach((product) => {
+        total += product.quantity;
+    });
+    return total;
+};
+
+// -- print total on page
+const cartItemsCounter = document.querySelector('.items_counter');
+cartItemsCounter.innerHTML = `${calcTotalItems()} Items`;
+
+
+
+// cart table
+// -- create the cart table
 const tableTbody = document.querySelector('tbody');
 // console.log(tableTbody);
-
-
 
 // -- fill thecart table with items
 products.forEach(product => generateItem(product));
 
+
 //++++++++++++++++++++++++ sidebar ++++++++++++++++++++++++++
+
 
 // cart summary items
 const cartSummaryItems = document.querySelector('.cart_summary_items');
-cartSummaryItems.innerHTML = `ITEMS - ${products.length}`;
+cartSummaryItems.innerHTML = `ITEMS - ${calcTotalItems()}`;
 
 
 
 // -- calculate cart summary price
-let cartTotalCost = 0;
+/**
+ * calc the total price of the cart based on each item total price already calculated
+ * @returns total price of the cart
+ */
+function calcCartTotalCost() {
+    let cartTotalCost = 0;
+    products.forEach(product => cartTotalCost += product.totalPrice());
+    return cartTotalCost;
+};
 
-products.forEach(product => cartTotalCost = cartTotalCost + product.totalPrice());
 
 // -- print cart summary price
 const cartSummaryPrice = document.querySelector('.cart_summary_price');
-cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
+cartSummaryPrice.innerHTML = `${calcCartTotalCost().toFixed(2)} €`;
 
 
 
@@ -159,8 +181,13 @@ cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
 const shippingCost = document.getElementById('shipping_options');
 
 // -- calc total cost checkout
+/**
+ * cacl the final price at checkout based on alredy calculated cart total cost and selected shipping cost
+ * @param {*} shippingCostValue the .value of the shipping option selected
+ * @returns final checkout price
+ */
 function calcChechkoutCost(shippingCostValue) {
-    return total = Number(cartTotalCost) + Number(shippingCostValue);
+    return total = Number(calcCartTotalCost()) + Number(shippingCostValue);
 };
 
 // -- print checkout cost
@@ -174,12 +201,15 @@ shippingCost.addEventListener('change', function () {
 
 
 
-// -- set 'observer' to work at all the changes on products.totalPrice and re-print cart summary price and checkot price --
+// -- set 'observer' to work at all the changes on products.totalPrice and reprint cart items counter, cart summary items, cart summary price, total checkout price, --
 const observerCart = new MutationObserver(() => {
-    cartTotalCost = 0;
-    products.forEach(product => cartTotalCost = cartTotalCost + product.totalPrice());
-    /* console.log(cartTotalCost); */
-    cartSummaryPrice.innerHTML = `${cartTotalCost.toFixed(2)} €`;
+    // reprint cart items counter
+    cartItemsCounter.innerHTML = `${calcTotalItems()} Items`;
+    // reprint cart summary items
+    cartSummaryItems.innerHTML = `ITEMS - ${calcTotalItems()}`;
+    // reprint cart summary price
+    cartSummaryPrice.innerHTML = `${calcCartTotalCost().toFixed(2)} €`;
+    // reprint total checkout cost
     totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
 });
 
