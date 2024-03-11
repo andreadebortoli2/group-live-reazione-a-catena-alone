@@ -21,6 +21,48 @@ const products = [
     pizza = new item('pizza.png', 'Pizza', 1, 10.00),
 ];
 
+
+
+// select and fill the products menu
+const productsSelection = document.getElementById('products_selection');
+
+products.forEach((product) => {
+    const option = document.createElement('option');
+    option.setAttribute('value', `${product.name}`);
+    option.innerHTML = `${product.name} - ${product.price} €`;
+    productsSelection.appendChild(option)
+    // console.log(option);
+})
+
+
+
+/* the cart array */
+const cart = [];
+
+// -- add the option/item to the cart, disable the option and print the item on page
+const cartBtn = document.querySelector('.add_to_cart_btn');
+
+cartBtn.addEventListener('click', function () {
+
+    // -- add the item to the cart and add the attribute disabled to the option selected and added
+
+    /* one-liner version
+    products.forEach(product => product.name === productsSelection.value ? (cart.push(product), document.querySelectorAll('option').forEach(option => option.value === product.name ? option.setAttribute('disabled', '') : '')) : '');
+     */
+
+    products.forEach((product) => {
+        if (product.name === productsSelection.value) {
+            cart.push(product);
+            document.querySelectorAll('option').forEach(option => option.value === product.name ? option.setAttribute('disabled', '') : '');
+        };
+    });
+    // console.log(cart);
+    tableTbody.innerHTML = '';
+    cart.forEach(item => generateItem(item));
+});
+
+
+
 /**
  * print on page a product as a row in the table
  * @param {object} item object to print
@@ -32,7 +74,7 @@ function generateItem(item) {
     const trItemRow = document.createElement('tr');
     tableTbody.append(trItemRow);
 
-    
+
     // item title
     const tdItemTitle = document.createElement('td');
     tdItemTitle.classList.add('item_title');
@@ -51,10 +93,24 @@ function generateItem(item) {
     const itemRemove = document.createElement('button');
     itemRemove.classList.add('item_remove');
     itemRemove.innerHTML = 'Remove';
-    itemRemove.addEventListener('click', function(){
+    itemRemove.addEventListener('click', function () {
+        // -- remove the disabled attribute from the option wich item is deleted from the cart and actually remove the item from the array 'cart'
+
+        /* one-liner version
+        document.querySelectorAll('option').forEach(option => option.value === item.name ? (option.removeAttribute('disabled'), cart.forEach((cartItem, index) => { cartItem.name === option.value ? cart.splice(index, 1) : '' })) : ''); */
+
+        document.querySelectorAll('option').forEach((option) => {
+            if (option.value === item.name) {
+                option.removeAttribute('disabled');
+                cart.forEach((cartItem, index) => cartItem.name === option.value ? cart.splice(index, 1) : '');
+            };
+        });
+        // -- set quantity to '0' to correctly re-calculate items quantity and total price
         item.quantity = 0;
-        tdItemTotal.innerHTML = `${item.totalPrice()}€`;
+        tdItemTotal.innerHTML = `${item.totalPrice()} €`;
         trItemRow.remove();
+        // -- re-set quantity to '1' ready for an eventually second selection to re-add the item to the cart
+        item.quantity = 1;
     });
 
     itemText.append(itemName, itemRemove);
@@ -72,12 +128,15 @@ function generateItem(item) {
     minusButton.classList.add('minus_button');
     minusButton.innerHTML = '-';
     minusButton.addEventListener('click', subtract);
+    /**
+     * decremente the quantity counter, re-print quantity and total price till quantity is over 1, else remove the eventListener
+     */
     function subtract() {
         if (item.quantity >= 1) {
             item.quantity--
             // console.log(item.quantity);
             quantityCounter.innerHTML = `${item.quantity}`;
-            tdItemTotal.innerHTML = `${item.totalPrice()}€`;
+            tdItemTotal.innerHTML = `${item.totalPrice()} €`;
         } else if (item.quantity === 1) {
             this.removeEventListener('click', subtract);
         };
@@ -98,21 +157,21 @@ function generateItem(item) {
         item.quantity++
         // console.log(item.quantity);
         quantityCounter.innerHTML = `${item.quantity}`;
-        tdItemTotal.innerHTML = `${item.totalPrice()}€`;
+        tdItemTotal.innerHTML = `${item.totalPrice()} €`;
     });
 
     // -- add quantity buttons and counter
     tdItemQuantity.append(minusButton, quantityCounter, plusButton);
 
 
-    // item price and total
+    // item price and total price
     const tdItemPrice = document.createElement('td');
     tdItemPrice.classList.add('item_price');
-    tdItemPrice.innerHTML = `${item.price}€`;
+    tdItemPrice.innerHTML = `${item.price} €`;
 
     const tdItemTotal = document.createElement('td');
     tdItemTotal.classList.add('item_total_price');
-    tdItemTotal.innerHTML = `${item.totalPrice()}€`;
+    tdItemTotal.innerHTML = `${item.totalPrice()} €`;
 
     // -- add all parts
     trItemRow.append(tdItemTitle, tdItemQuantity, tdItemPrice, tdItemTotal);
@@ -129,13 +188,11 @@ function generateItem(item) {
  */
 function calcTotalItems() {
     let total = 0;
-    products.forEach((product) => {
-        total += product.quantity;
-    });
+    cart.forEach(item => total += item.quantity);
     return total;
 };
 
-// -- print total on page
+// -- print items total on page
 const cartItemsCounter = document.querySelector('.items_counter');
 cartItemsCounter.innerHTML = `${calcTotalItems()} Items`;
 
@@ -145,9 +202,6 @@ cartItemsCounter.innerHTML = `${calcTotalItems()} Items`;
 // -- create the cart table
 const tableTbody = document.querySelector('tbody');
 // console.log(tableTbody);
-
-// -- fill thecart table with items
-products.forEach(product => generateItem(product));
 
 
 //++++++++++++++++++++++++ sidebar ++++++++++++++++++++++++++
@@ -166,7 +220,7 @@ cartSummaryItems.innerHTML = `ITEMS - ${calcTotalItems()}`;
  */
 function calcCartTotalCost() {
     let cartTotalCost = 0;
-    products.forEach(product => cartTotalCost += product.totalPrice());
+    cart.forEach(item => cartTotalCost += item.totalPrice());
     return cartTotalCost;
 };
 
@@ -201,7 +255,7 @@ shippingCost.addEventListener('change', function () {
 
 
 
-// -- set 'observer' to work at all the changes on products.totalPrice and reprint cart items counter, cart summary items, cart summary price, total checkout price, --
+// -- set 'observer' to work at all the changes on table element and children and reprint cart items counter, cart summary items, cart summary price, total checkout price, --
 const observerCart = new MutationObserver(() => {
     // reprint cart items counter
     cartItemsCounter.innerHTML = `${calcTotalItems()} Items`;
@@ -213,8 +267,6 @@ const observerCart = new MutationObserver(() => {
     totalCheckoutCost.innerHTML = `${calcChechkoutCost(shippingCost.value).toFixed(2)} €`;
 });
 
-document.querySelectorAll('.item_total_price').forEach((item) => {
-    observerCart.observe(item, {
-        childList: true,
-    });
-});
+
+const sons = { childList: true, subtree: true }
+observerCart.observe(tableTbody, sons)

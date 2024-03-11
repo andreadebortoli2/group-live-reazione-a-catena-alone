@@ -36,45 +36,66 @@
         
         <div class="sidebar">
             <div class="sidebar_top">
-                <h2>Order Summary</h2>
+                <div class="order_top">
+                    <h2>Order Menu</h2>
+                </div>
+                <!-- /.order_top -->
+                <div class="order_bottom">
+                    <form action="#">
+                        <select id="products_selection">
+                            <option value="" disabled selected>Choose your meal</option>
+                        </select>
+                        <!-- /.products_selection -->
+                        <button class="add_to_cart_btn">Add to cart</button>
+                    </form>
+                </div>
+                <!-- /.order_bottom -->
             </div>
             <!-- /.sidebar_top -->
+
             <div class="sidebar_bottom">
-                <form action="#">
-                    <div class="cart_summary">
-                        <div class="cart_summary_items"></div>
-                        <!-- /.cart_summary_items -->
-                        <div class="cart_summary_price"></div>
-                        <!-- /.cart_summary_price -->
-                    </div>
-                    <!-- /.cart_summary -->
-                    <div class="shipping_cost">
-                        <label for="shipping_options">SHIPPING</label>
-                        <select id="shipping_options">
-                            <option value="5">Standard Delivery - 5 €</option>
-                            <option value="8">Extra Fast Delivery - 8 €</option>
-                            <option value="10">Ultra Fast Delivery - 10 €</option>
-                        </select>
-                    </div>
-                    <!-- /.shipping_cost -->
-                    <div class="promo_code">
-                        <label for="code">PROMO CODE</label>
-                        <!-- /.label -->
-                        <input id="code" type="text" placeholder="Enter Your Code">
-                        <button class="apply">APPLY</button>
-                        <!-- /.apply --></div>
-                    <!-- /.promo_code -->
-                    <div class="checkout">
-                        <div class="total_cost">
-                            <div>TOTAL COST</div>
-                            <div class="checkout_cost"></div>
+                <div class="summary_top">
+                    <h2>Order Summary</h2>
+                </div>
+                <!-- /.sidebar_top -->
+                <div class="summary_bottom">
+                    <form action="#">
+                        <div class="cart_summary">
+                            <div class="cart_summary_items"></div>
+                            <!-- /.cart_summary_items -->
+                            <div class="cart_summary_price"></div>
+                            <!-- /.cart_summary_price -->
                         </div>
-                        <!-- /.total_cost -->
-                        <button class="btn_checkout">CHECKOUT</button>
-                        <!-- /.btn_checkout -->
+                        <!-- /.cart_summary -->
+                        <div class="shipping_cost">
+                            <label for="shipping_options">SHIPPING</label>
+                            <select id="shipping_options">
+                                <option value="5">Standard Delivery - 5 €</option>
+                                <option value="8">Extra Fast Delivery - 8 €</option>
+                                <option value="10">Ultra Fast Delivery - 10 €</option>
+                            </select>
+                        </div>
+                        <!-- /.shipping_cost -->
+                        <div class="promo_code">
+                            <label for="code">PROMO CODE</label>
+                            <!-- /.label -->
+                            <input id="code" type="text" placeholder="Enter Your Code">
+                            <button class="apply">APPLY</button>
+                            <!-- /.apply --></div>
+                            <!-- /.promo_code -->
+                            <div class="checkout">
+                                <div class="total_cost">
+                                    <div>TOTAL COST</div>
+                                    <div class="checkout_cost"></div>
+                                </div>
+                                <!-- /.total_cost -->
+                                <button class="btn_checkout">CHECKOUT</button>
+                                <!-- /.btn_checkout -->
+                            </div>
+                            <!-- /.checkout -->
+                        </form>
                     </div>
-                    <!-- /.checkout -->
-                </form>
+                    <!-- /.sidebar_bottom -->
             </div>
             <!-- /.sidebar_bottom -->
         </div>
@@ -82,7 +103,7 @@
     </div>
     <!-- /.container -->
 </main>
-    
-    <script src="./assets/js/main.js"></script>
+
+<script src="./assets/js/main.js"></script>
 </body>
 </html>
